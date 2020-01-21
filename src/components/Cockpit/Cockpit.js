@@ -12,7 +12,7 @@ const cockpit = (props) => {
         <div>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">{props.title}</h1>
         </header>
         <button style={style} onClick={props.toggled}>
           Press Me
