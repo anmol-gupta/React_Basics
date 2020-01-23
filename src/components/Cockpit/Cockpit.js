@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from '../../assets/logo.svg';
 
 const cockpit = (props) => {
+    useEffect(() => {
+        console.log('Cockpit.js useEffect');
+    },[]);
     const style = {
         backgroundColor: "white",
         font: "inherit",
@@ -20,4 +23,4 @@ const cockpit = (props) => {
     )
 }
 
-export default cockpit;
+export default React.memo(cockpit);
