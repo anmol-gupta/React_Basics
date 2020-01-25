@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import "./App.css";
 import Persons from "../components/Persons/Persons";
 // import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import Cockpit from "../components/Cockpit/Cockpit"
+import Cockpit from "../components/Cockpit/Cockpit";
+import WithClass from '../hoc/WithClass';
 
 class App extends Component {
 
@@ -17,7 +18,8 @@ class App extends Component {
       { id: "svcx", name: "Aastha Bubber", age: 23 },
       { id: "das", name: "Dumpy Gupta", age: 22 }
     ],
-    showPersons: false
+    showPersons: false,
+    changeCounter : 0
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -50,9 +52,12 @@ class App extends Component {
     person.name = event.target.value;
     const persons = [...this.state.persons];
     persons[personIndex] = person;
-    this.setState({
-      persons: persons
-    });
+    this.setState((prevState, props) => {
+      return {
+        persons: persons,
+        changeCounter: prevState.changeCounter +1
+      }
+    })
   };
 
   togglePersonsHandler = () => {
@@ -80,10 +85,10 @@ class App extends Component {
     }
 
     return (
-      <div className="App">
+      <WithClass classes="App">
         <Cockpit persons={this.state.persons} title={this.props.appTitle} toggled={this.togglePersonsHandler}/>
         {persons}
-      </div>
+      </WithClass>
     );
   }
 }
