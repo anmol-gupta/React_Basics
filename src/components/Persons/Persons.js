@@ -1,43 +1,43 @@
-import React, { Component } from 'react';
-import Person from './Person /Person';
-import ErrorBoundary from '../../ErrorBoundary/ErrorBoundary';
-
+import React, { Component } from "react";
+import Person from "./Person /Person";
+import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
+// import AuthContext from "../../context/auth-context";
 
 class Persons extends Component {
-    static getDerivedStateFromProps(props, state) {
-        console.log('[Persons.js] getDerivedStateFromProps');
-    }
+  static getDerivedStateFromProps(props, state) {
+    console.log("[Persons.js] getDerivedStateFromProps");
+  }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if(this.props.persons !== nextProps.persons)
-            return true;
-        return false;
-    }
-    getSnapshotBeforeUpdate(prevProps, prevState) {
-        console.log('[Persons.js] getSnapshotBeforeUpdate');
-        return {message: 'Snapshot!'};
-    }
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log('Persons.js componentDidUpdate');
-        console.log(snapshot);
-    }
-    render() {
-        console.log('Persons.js render');
-    return this.props.persons.map((person, index) => {
-        return (
-          <ErrorBoundary key={person.id}>
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.persons !== nextProps.persons) return true;
+    return false;
+  }
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log("[Persons.js] getSnapshotBeforeUpdate");
+    return { message: "Snapshot!" };
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log("Persons.js componentDidUpdate");
+    console.log(snapshot);
+  }
+  render() {
+    console.log("Persons.js render");
+    return (
+        this.props.persons.map((person, index) => {
+      return (
+        <ErrorBoundary key={person.id}>
           <Person
             click={() => {
               this.props.clicked(index);
             }}
             name={person.name}
             age={person.age}
-            changed={(event) => this.props.changed(event, person.id)}
-          /></ErrorBoundary>
-        );
-      })
-    }
-    
-    }
+            changed={event => this.props.changed(event, person.id)}
+          />
+        </ErrorBoundary>
+      );
+    }));
+  }
+}
 
 export default Persons;

@@ -3,13 +3,13 @@ import "./App.css";
 import Persons from "../components/Persons/Persons";
 // import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import Cockpit from "../components/Cockpit/Cockpit";
-import WithClass from '../hoc/WithClass';
+import WithClass from "../hoc/WithClass";
+import AuthContext from "../context/auth-context";
 
 class App extends Component {
-
   constructor(props) {
     super(props);
-    console.log('App.js contructor');
+    console.log("App.js contructor");
   }
 
   state = {
@@ -19,16 +19,17 @@ class App extends Component {
       { id: "das", name: "Dumpy Gupta", age: 22 }
     ],
     showPersons: false,
-    changeCounter : 0
+    changeCounter: 0,
+    authenticated: false
   };
 
   static getDerivedStateFromProps(props, state) {
-    console.log('App.js getDerivedStateFromProps', props);
+    console.log("App.js getDerivedStateFromProps", props);
     return state;
   }
 
   componentDidMount() {
-    console.log('[App.js] componentDidMount');
+    console.log("[App.js] componentDidMount");
   }
 
   deletePersonHandler = personIndex => {
@@ -55,9 +56,9 @@ class App extends Component {
     this.setState((prevState, props) => {
       return {
         persons: persons,
-        changeCounter: prevState.changeCounter +1
-      }
-    })
+        changeCounter: prevState.changeCounter + 1
+      };
+    });
   };
 
   togglePersonsHandler = () => {
@@ -67,9 +68,14 @@ class App extends Component {
     });
   };
 
+  loginHandler = () => {
+    this.setState({
+      authenticated: true
+    });
+  };
+
   render() {
-    
-    console.log('[App.js] render');
+    console.log("[App.js] render");
     let persons = null;
 
     if (this.state.showPersons) {
@@ -86,8 +92,19 @@ class App extends Component {
 
     return (
       <WithClass classes="App">
-        <Cockpit persons={this.state.persons} title={this.props.appTitle} toggled={this.togglePersonsHandler}/>
-        {persons}
+        <AuthContext.Provider
+          value={{
+            authenticated: this.state.authenticated,
+            login: this.loginHandler
+          }}
+        >
+          <Cockpit
+            persons={this.state.persons}
+            title={this.props.appTitle}
+            toggled={this.togglePersonsHandler}
+          />
+          {persons}
+        </AuthContext.Provider>
       </WithClass>
     );
   }
